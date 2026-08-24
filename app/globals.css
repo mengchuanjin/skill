@@ -75,3 +75,26 @@ body {
     transition-duration: 0.01ms !important;
   }
 }
+
+/*
+ * 首页每个板块只露两行，其余内容留给「更多」二级页。
+ * 每个断点的列数不同，所以按断点分段裁剪：
+ *   移动端 1 列 -> 2 张，sm 2 列 -> 4 张，lg 3 列 -> 6 张，xl 4 列 -> 8 张。
+ * 这里只写 display:none、不写「显示」的规则，免得覆盖掉卡片本身的
+ * display:flex（骨架屏是 block，被强行改成 flex 会横过来）。
+ */
+@media (max-width: 39.999rem) {
+  .grid-two-rows > *:nth-child(n + 3) {
+    display: none;
+  }
+}
+@media (min-width: 40rem) and (max-width: 63.999rem) {
+  .grid-two-rows > *:nth-child(n + 5) {
+    display: none;
+  }
+}
+@media (min-width: 64rem) and (max-width: 79.999rem) {
+  .grid-two-rows > *:nth-child(n + 7) {
+    display: none;
+  }
+}

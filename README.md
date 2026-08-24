@@ -24,9 +24,13 @@ npm run dev
 | **热门话题** | AI 资讯 + 社区讨论 | Hacker News、TechCrunch AI、The Verge AI、Ars Technica、VentureBeat、MIT Tech Review |
 | **最新 Skill / 工具** | 新发布的工具与项目 | GitHub Search、OpenAI Blog、Hugging Face Blog |
 
-每个板块都支持按来源筛选、按「热度 / 最新」切换排序。点卡片从右侧滑出详情抽屉，底部「查看原文」新标签页打开原链接。
+**首页每个板块只露两行**，保证一屏之内看完不用滚。两行是按断点算的：手机 2 张、平板 4 张、桌面 6-8 张。想看全部就点标题旁的「更多」或列表底部的「查看全部 N 条」，进到该板块的完整列表页（`/topics`、`/tools`）。
 
-Header 有手动刷新按钮（带 loading 态）和最后更新时间；页面开着时每 45 分钟自动刷新一次，靠前端定时器实现，没有服务端常驻任务。
+**点卡片直接在新标签页打开原文**，没有中间弹窗。用新标签页是因为看板本身会定时自动刷新，在当前页跳走会把看板顶掉。
+
+两个板块、以及二级页，都支持按来源筛选和「热度 / 最新」排序切换。
+
+Header 有手动刷新按钮（带 loading 态）和最后更新时间，点左上角标题可以随时回首页；页面开着时每 45 分钟自动刷新一次，靠前端定时器实现，没有服务端常驻任务。
 
 ## 数据源都不要 API Key
 
@@ -78,7 +82,9 @@ GET /api/dashboard         聚合结果
 
 ## 技术栈
 
-Next.js 16（App Router）+ TypeScript + Tailwind CSS v4 + Radix UI（Sheet / Select，shadcn/ui 风格组件直接放在 `components/ui/`）+ SWR。
+Next.js 16（App Router）+ TypeScript + Tailwind CSS v4 + Radix UI（Select，shadcn/ui 风格组件直接放在 `components/ui/`）+ SWR。
+
+首页和二级页共用同一个 SWR key，从首页点进「更多」不会重新打接口。
 
 ## 目录
 
@@ -88,11 +94,15 @@ lib/types.ts           ContentItem 统一数据模型
 lib/sources/           三个源各自的抓取 + 转换
 lib/aggregate.ts       聚合、去重、排序
 lib/cache.ts           5 分钟内存缓存（含并发请求合并）
+lib/sections.ts        两个板块的定义，首页与二级页共用
+lib/use-dashboard.ts   SWR 数据 hook（自动刷新 + 手动刷新）
 lib/fixtures.ts        离线示例数据
 app/api/               API Routes
+app/topics/            「热门话题」完整列表页
+app/tools/             「最新 Skill / 工具」完整列表页
 components/            看板 UI
 ```
 
 ## 明确不做
 
-无用户体系、无数据库、无历史趋势、无全网爬虫、无搜索框、无收藏、无服务端 cron。只展示当前快照。
+无用户体系、无数据库、无历史趋势、无全网爬虫、无搜索框、无收藏、无服务端 cron、无详情弹窗。只展示当前快照。
