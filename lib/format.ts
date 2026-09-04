@@ -62,12 +62,26 @@ const SOURCE_HUES: Record<string, number> = {
   "MIT Tech Review AI": 355,
   "OpenAI Blog": 165,
   "Hugging Face Blog": 45,
+  // 「全球看中国」的来源
+  "BBC 中国": 5,
+  "The Guardian 中国": 210,
+  "NYT 亚太": 220,
+  "SCMP 南华早报": 30,
+  "Al Jazeera": 40,
+  "德国之声 DW": 15,
+  "France 24 亚太": 230,
+  日经亚洲: 340,
+  "The Diplomat": 200,
+  "NPR 国际": 250,
+  "Google News 涉华": 100,
+  Reddit: 20,
+  Bluesky: 205,
 };
 
 export function sourceBadgeStyle(sourceName: string): React.CSSProperties {
   const hue = SOURCE_HUES[sourceName] ?? hashHue(sourceName);
-  // GitHub 没有代表色，用中性灰
-  if (sourceName === "GitHub") {
+  // GitHub 和 X 的品牌色都是黑白，用中性灰而不是硬凑一个色相
+  if (sourceName === "GitHub" || sourceName === "X") {
     return {
       color: "#d4d4d8",
       backgroundColor: "rgba(255,255,255,0.06)",
@@ -93,4 +107,5 @@ export const SOURCE_TYPE_LABEL: Record<SourceType, string> = {
   news: "资讯",
   community: "社区",
   skill_tool: "工具",
+  china_watch: "涉华",
 };

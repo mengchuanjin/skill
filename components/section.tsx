@@ -26,15 +26,17 @@ export function Section({
   loading,
   /** 传了就是首页模式：只显示两行，标题后面出现「更多」入口 */
   moreHref,
+  defaultSort = "score",
 }: {
   title: string;
   description: string;
   items: ContentItem[];
   loading: boolean;
   moreHref?: string;
+  defaultSort?: SortMode;
 }) {
   const [source, setSource] = React.useState<string>(ALL_SOURCES);
-  const [sort, setSort] = React.useState<SortMode>("score");
+  const [sort, setSort] = React.useState<SortMode>(defaultSort);
 
   const compact = moreHref !== undefined;
 

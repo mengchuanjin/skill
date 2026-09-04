@@ -290,3 +290,160 @@ export function fixtureRss(): SourceResult[] {
     },
   ];
 }
+
+const chinaItem = (
+  source: string,
+  id: string,
+  title: string,
+  summary: string,
+  url: string,
+  score: number,
+  hours: number,
+  tags: string[],
+): ContentItem => ({
+  id: `china:${source}:${id}`,
+  title,
+  summary,
+  url,
+  sourceType: "china_watch",
+  sourceName: source,
+  score,
+  publishedAt: hoursAgo(hours),
+  tags,
+});
+
+/**
+ * 「全球看中国」的离线示例。
+ * 刻意混了正面、负面、中性三种调子的条目 —— 这个板块的设计前提就是
+ * 不做立场筛选，示例数据也不该只呈现一种口径。
+ */
+export function fixtureChina(): SourceResult[] {
+  return [
+    {
+      sourceName: "BBC 中国",
+      items: [
+        chinaItem(
+          "BBC 中国",
+          "b1",
+          "China's electric vehicle exports hit a new quarterly record",
+          "中国电动车出口连续第三个季度创新高，欧洲仍是最大单一市场，但增速已明显放缓。",
+          "https://example.com/bbc-ev-exports",
+          100,
+          4,
+          ["china", "byd"],
+        ),
+        chinaItem(
+          "BBC 中国",
+          "b2",
+          "Rights groups renew criticism over Xinjiang labour audit access",
+          "多家人权组织称独立审计仍无法进入相关工厂，中国外交部回应指相关指控毫无根据。",
+          "https://example.com/bbc-xinjiang-audit",
+          100,
+          13,
+          ["xinjiang", "china"],
+        ),
+      ],
+    },
+    {
+      sourceName: "The Guardian 中国",
+      items: [
+        chinaItem(
+          "The Guardian 中国",
+          "g1",
+          "Chinese researchers publish open-weight model rivalling Western labs",
+          "该模型在多项公开基准上追平主流闭源模型，作者团队同时放出了完整训练细节。",
+          "https://example.com/guardian-open-model",
+          100,
+          8,
+          ["china", "chinese"],
+        ),
+      ],
+    },
+    {
+      sourceName: "日经亚洲",
+      items: [
+        chinaItem(
+          "日经亚洲",
+          "n1",
+          "Foreign direct investment into China slows for a fifth straight quarter",
+          "日经统计显示外资流入连续第五个季度下滑，制造业降幅小于服务业。",
+          "https://example.com/nikkei-fdi",
+          92,
+          26,
+          ["china", "beijing"],
+        ),
+      ],
+    },
+    {
+      sourceName: "Google News 涉华",
+      items: [
+        chinaItem(
+          "Google News 涉华",
+          "gn1",
+          "Beijing announces expanded visa-free entry for 12 more countries",
+          "免签国家名单再度扩容，旅游业界预计将带动下一季度入境游明显回升。",
+          "https://example.com/gnews-visa-free",
+          100,
+          6,
+          ["beijing", "china"],
+        ),
+        chinaItem(
+          "Google News 涉华",
+          "gn2",
+          "New export controls put fresh pressure on chip supply chains",
+          "分析师认为新一轮管制对成熟制程影响有限，但会推高部分设备的替代成本。",
+          "https://example.com/gnews-chip-controls",
+          100,
+          19,
+          ["china", "smic"],
+        ),
+      ],
+    },
+    {
+      sourceName: "Reddit",
+      items: [
+        chinaItem(
+          "Reddit",
+          "r1",
+          "Just came back from two weeks in Chengdu and Chongqing — not what I expected",
+          "一条高赞游记帖，评论区大量欧美网民讨论亲身观感与媒体印象之间的落差。",
+          "https://example.com/reddit-chengdu",
+          4820,
+          11,
+          ["r/China", "china"],
+        ),
+        chinaItem(
+          "Reddit",
+          "r2",
+          "Discussion: how much of China's manufacturing edge is actually policy vs scale?",
+          "r/geopolitics 的一条长讨论，正反双方都引用了不少数据。",
+          "https://example.com/reddit-manufacturing",
+          1960,
+          31,
+          ["r/geopolitics", "china"],
+        ),
+      ],
+    },
+    {
+      sourceName: "Bluesky",
+      items: [
+        chinaItem(
+          "Bluesky",
+          "bs1",
+          "The gap between what people assume about Chinese cities and what you see…",
+          "一条转发过千的帖子，作者贴了一组自己拍的城市照片，评论区争论激烈。",
+          "https://example.com/bsky-cities",
+          734,
+          5,
+          ["@someone.bsky.social", "chinese"],
+        ),
+      ],
+    },
+    {
+      sourceName: "X",
+      items: [],
+      error: "未配置 X_BEARER_TOKEN（X 已取消免费搜索 API），该源未启用",
+      skipped: true,
+    },
+  ];
+}

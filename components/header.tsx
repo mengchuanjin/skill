@@ -27,7 +27,8 @@ export function Header({
     return () => clearInterval(timer);
   }, []);
 
-  const failed = (data?.sources ?? []).filter((s) => s.error);
+  // 主动跳过的源（如没配 token 的 X）不是故障，不进这个计数
+  const failed = (data?.sources ?? []).filter((s) => s.error && !s.skipped);
 
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--background)]/85 backdrop-blur-md">

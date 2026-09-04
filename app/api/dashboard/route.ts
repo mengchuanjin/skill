@@ -3,6 +3,8 @@ import { loadDashboard } from "@/lib/aggregate";
 import type { SortMode, SourceType } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
+// 聚合所有源，境外 RSS 慢，Vercel 默认 10s 不够用
+export const maxDuration = 30;
 
 const SOURCE_TYPES: SourceType[] = ["news", "skill_tool", "community"];
 const SORTS: SortMode[] = ["score", "date"];

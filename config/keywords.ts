@@ -1,3 +1,5 @@
+import type { SourceType } from "@/lib/types";
+
 /**
  * AI 相关关键词配置。
  *
@@ -116,8 +118,13 @@ export interface FeedConfig {
   /** 展示用的来源名，会成为 ContentItem.sourceName */
   name: string;
   url: string;
-  /** news = 媒体资讯；skill_tool = 产品/工具发布 */
-  sourceType: "news" | "skill_tool";
+  /** 该源的条目归到哪个板块 */
+  sourceType: SourceType;
+  /**
+   * true = 整个源都是本主题的，跳过关键词过滤。
+   * 只在确定该 feed 不会混入无关内容时才设（如 OpenAI 官方博客）。
+   */
+  topical?: boolean;
 }
 
 export const RSS_FEEDS: FeedConfig[] = [
@@ -150,11 +157,13 @@ export const RSS_FEEDS: FeedConfig[] = [
     name: "OpenAI Blog",
     url: "https://openai.com/news/rss.xml",
     sourceType: "skill_tool",
+    topical: true,
   },
   {
     name: "Hugging Face Blog",
     url: "https://huggingface.co/blog/feed.xml",
     sourceType: "skill_tool",
+    topical: true,
   },
 ];
 

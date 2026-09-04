@@ -30,6 +30,7 @@ export function Dashboard() {
             description={section.description}
             items={items.filter(section.match)}
             loading={isBusy}
+            defaultSort={section.defaultSort}
             moreHref={`/${section.slug}`}
           />
         ))}

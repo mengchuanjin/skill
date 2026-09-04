@@ -6,14 +6,14 @@ import { ErrorBanner, FixtureBanner } from "@/components/dashboard";
 import { Header } from "@/components/header";
 import { Section } from "@/components/section";
 import { SourceStatus } from "@/components/source-status";
-import { sectionBySlug } from "@/lib/sections";
+import { sectionBySlug, type SectionSlug } from "@/lib/sections";
 import { useDashboard } from "@/lib/use-dashboard";
 
 /**
  * 「更多」二级页：某一个板块的完整列表，不做两行截断。
  * 和首页共用同一个 SWR key，所以从首页点进来不会重新打接口。
  */
-export function SectionPage({ slug }: { slug: "topics" | "tools" }) {
+export function SectionPage({ slug }: { slug: SectionSlug }) {
   const { data, items, error, refresh, isBusy, lastUpdated } = useDashboard();
   const section = sectionBySlug(slug);
 
@@ -45,6 +45,7 @@ export function SectionPage({ slug }: { slug: "topics" | "tools" }) {
           description={section.description}
           items={items.filter(section.match)}
           loading={isBusy}
+          defaultSort={section.defaultSort}
         />
 
         <SourceStatus data={data} />

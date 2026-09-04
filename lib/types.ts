@@ -3,7 +3,12 @@
  * 所有数据源（HN / GitHub / RSS）抓取后都必须转换成这一种格式，
  * 前端只消费 ContentItem，不感知任何第三方 API 的原始结构。
  */
-export type SourceType = "news" | "skill_tool" | "community";
+export type SourceType =
+  | "news"
+  | "skill_tool"
+  | "community"
+  /** 全球媒体的涉华报道，独立成板块 */
+  | "china_watch";
 
 export interface ContentItem {
   /** 唯一 ID，约定为 `${sourceName}:${原始id}` 形式 */
@@ -13,7 +18,12 @@ export interface ContentItem {
   summary: string;
   /** 原文链接 */
   url: string;
-  /** 归属板块：news + community -> 热门话题；skill_tool -> 最新 Skill/工具 */
+  /**
+   * 归属板块：
+   *   china_watch -> 全球看中国
+   *   news + community -> 热门话题
+   *   skill_tool -> 最新 Skill/工具
+   */
   sourceType: SourceType;
   /** 具体来源名，如 "Hacker News" / "GitHub" / "TechCrunch AI" */
   sourceName: string;
@@ -29,12 +39,17 @@ export interface SourceResult {
   sourceName: string;
   items: ContentItem[];
   error?: string;
+  /**
+   * true = 该源是主动跳过的（比如没配 token），不是抓取失败。
+   * 页面上按「未启用」的灰点显示，不计入「N 个源抓取失败」。
+   */
+  skipped?: boolean;
 }
 
 export interface DashboardPayload {
   items: ContentItem[];
   /** 每个源的抓取状态，用于 Header 上的健康提示 */
-  sources: { name: string; count: number; error?: string }[];
+  sources: { name: string; count: number; error?: string; skipped?: boolean }[];
   fetchedAt: string;
   /** 是否为离线示例数据（DASHBOARD_FIXTURES=1 时为 true） */
   fixtures?: boolean;

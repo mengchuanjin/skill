@@ -1,8 +1,11 @@
-/** 带超时的 fetch —— 单个源卡住时不能拖垮整个聚合接口 */
+/**
+ * 带超时的 fetch —— 单个源卡住时不能拖垮整个聚合接口。
+ * 8 秒是照着 Vercel Hobby 档 10 秒函数上限留的余量。
+ */
 export async function fetchWithTimeout(
   url: string,
   init: RequestInit = {},
-  timeoutMs = 10_000,
+  timeoutMs = 8_000,
 ): Promise<Response> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
